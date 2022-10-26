@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body onload="onInit()">
+    <!-- כאן יהיה כל הקטע של ראש הדף, קישורים, כיתוב, וכן הלאה -->
+    <header></header>
+
+    <!-- כאן יבואו שתי סקשנים: 1: המקום שאליו יהיו מוזרקים כל הממים, 2: שם יה יהיה הקטע של קנבס וגם הוא יהיה מחולק ל2 -->
+    <section class="mems-gallery">
+    </section>
+
+    <section class="meme">
+
+        <section class="canvas-contaainer">
+            <canvas id="meme-canvas" height="500" width="500"></canvas>
+        </section>
+
+        <section class="editor-container">
+
+            <input class="text-box" type="text" data-trans="line-text" name="" id="" placeholder="enter text" value="" class="input-text"
+                oninput="changeText(this.value)">
+            <button onclick="onDeleatText()">🗑️</button>
+
+            <div class="feachure"></div>
+
+
+
+            
+
+
+        </section>
+    </section>
+
+
+
+
+    <script src="./js/services/imgs-service.js"></script>
+    <script src="./js/services/meme.service.js"></script>
+    <script src="./js/controllers/controller.js"></script>
+    <script src="./js/controllers/img-controller.js"></script>
+    <script src="./js/controllers/meme-controller.js"></script>
+</body>
+
+</html>
