@@ -35,3 +35,7 @@ function getImmgByUrl(url) {
     return meme
 }
 
+function getImgById(id) {
+    return gImgs.find(img => img.id === id)
+}
+

@@ -10,13 +10,29 @@ function createMeme(imgIdx) {
         selectedImgId: imgIdx,
         selectedLineIdx: 0,
         feachures: [],
-        lines: [{ txt: '', size: 40, align: 'center', color: 'white', stroke: 'black',}]
+        lines: [{ txt: '', size: '40', width: 30, height: 50, color: 'white', stroke: 'black', }]
     }
     gMeme = meme
 }
 
 
+function resizeCanvas() {
 
+
+    const elContainer = document.querySelector('.canvas-contaainer')
+
+
+    // var width = elContainer.offsetWidth
+    // var height = elContainer.offsetHeight
+
+    // if (width <= 500 && height <= 500) {
+        gElCanvas.width = elContainer.offsetWidth
+        gElCanvas.height = elContainer.offsetWidth
+        renderMeme()
+    // }
+
+
+}
 
 
 //פונקציה שמקבלת קישור של תמונה ומציירת אותה על הקנבס
@@ -32,14 +48,14 @@ function drawMeme(url) {
 
 
 //פונקציה שמציירת כיתוב שמקבלת במיקום שמקבלת על הקנבס
-function drawText(text = '', x, y) {
+function drawText(text = '', x = 30, y = 50, size = 40) {
     //כאן אני אקרא לפונקציה שתצייר לי מסגרת לטקסט מתחילת העמוד ועד סוף העמוד בגוגבה נתון
     gCtx.lineWidth = 2
     gCtx.strokeStyle = 'black'
-    gCtx.fillStyle = 'white'
-    gCtx.font = '40px Arial'
-    gCtx.fillText(text, x + 20, y + 10)
-    gCtx.strokeText(text, x + 20, y + 10)
+    gCtx.fillStyle = gMeme.color
+    gCtx.font = size + 'px Arial'
+    gCtx.fillText(text, x, y)
+    gCtx.strokeText(text, x, y)
 }
 
 // כאן אני אכתוב פונקציה שתצייר לי מסגרת לטקסט ברוחב של הקנבס ובוגבה מסוים
@@ -73,47 +89,38 @@ function borderText(height) {
 //מוסיף אימוגי למערך של האימוגי במימ הגלובלי ומוסיף אותו לדף בנקודה קבועה
 function addFeachure(emoji) {
     gMeme.feachures.push({ txt: emoji, pos: { x: 240, y: 240 }, size: 70 });
-    // console.log('x' , gMeme.feachures[0].pos.x);
-    // drawText(emoji, gMeme.feachures[0].pos.x, gMeme.feachures[0].pos.y)
     renderFeachureOnCanvas()
-    // console.log(gMeme.feachures);
 }
 
 //עכשיו אני רוצה לבדוק פה האם הלחיצה היא במיקום של אחד מהאימוגים
 //והיא מחזירה לי את המיקום במערך של האימוגי שלחצתי עליו
 function isClickedOnEmojiReturnIdx(pos) {
     var emoji = gMeme.feachures.find(feachure => {
-        return pos.x >= feachure.pos.x + 20 && pos.x <= feachure.pos.x + feachure.size  && 
-               pos.y >= feachure.pos.y + 20 - feachure.size/2 && pos.y <= feachure.pos.y + feachure.size/2 - 20
+        return pos.x >= feachure.pos.x + 20 && pos.x <= feachure.pos.x + feachure.size &&
+            pos.y >= feachure.pos.y + 20 - feachure.size / 2 && pos.y <= feachure.pos.y + feachure.size / 2 - 20
     })
 
     //פה בעצם יש לי אימוגי וכאן אני יכולה לבדוק באיזה מיקום הוא במערך
 
     //לדעתי כדאי שאני אשנה את זה שיחזיר רק כן או לא ואז אני אעשה
     //עוד פונקציה שתמצא לי איפה האימוגי נמצא
-    if (emoji) return emoji //true//findEmojiInGmeme(emoji)
+    if (emoji) return emoji
     else return false
 }
 
 
 //זאת פונקציה שמוצאת לי אינדקס של אימוגי מסוים במערך של המימ הגלובלי
 function findEmojiInGmeme(emoji) {
-    var idxEmoji = gMeme.feachures.findIndex(feachure => 
-        // console.log(feachure.txt);
-         feachure.txt === emoji.txt && feachure.pos.x === emoji.pos.x && feachure.pos.y === emoji.pos.y
+    var idxEmoji = gMeme.feachures.findIndex(feachure =>
+        feachure.txt === emoji.txt && feachure.pos.x === emoji.pos.x && feachure.pos.y === emoji.pos.y
     )
     return idxEmoji
 }
 
 //הפונקציה מעדכנת לי בהינתן אינדקס ומיקום את המיקום על הקנבס
 function updateFeachure(idx, pos) {
-    // if (idx === undefined) return
+    if (!pos) return
     gMeme.feachures[idx].pos.x = pos.x
     gMeme.feachures[idx].pos.y = pos.y
-    console.log('האם אני נכנס לפה בכלל?');
-    console.log(pos);
-    console.log(idx);
-    // console.log('gMeme.feachures[idx].pos.x', gMeme.feachures[idx].pos.x);
-    // console.log('gMeme.feachures[idx].pos.y', gMeme.feachures[idx].pos.y);
 }
 

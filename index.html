@@ -7,46 +7,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./fonts/fontawesome-free-6.2.0-web/css/all.css">
 </head>
 
 <body onload="onInit()">
-    <!-- כאן יהיה כל הקטע של ראש הדף, קישורים, כיתוב, וכן הלאה -->
-    <header></header>
+    <div class="main-layout flex">
+        <header class="main-header flex">
 
-    <!-- כאן יבואו שתי סקשנים: 1: המקום שאליו יהיו מוזרקים כל הממים, 2: שם יה יהיה הקטע של קנבס וגם הוא יהיה מחולק ל2 -->
-    <section class="mems-gallery">
-    </section>
+            <div class="header-container main-layout flex space-between align-center">
+                <div class="logo"><img src="./img/LOGO.png"></div>
+            </div>
 
-    <section class="meme">
 
-        <section class="canvas-contaainer">
-            <canvas id="meme-canvas" height="500" width="500"></canvas>
+
+            <div class="nav-links">
+                <ul class="main-nav clean-list flex">
+                    <il onclick="OnGoBackToGallery()"><a href="./index.html">gallery</a></il>
+                    <il><a href="./memes.html">meme</a></il>
+                    <il><a href="./about.html">About</a></il>
+                </ul>
+            </div>
+        </header>
+
+
+
+
+
+
+
+        <!-- כאן יבואו שתי סקשנים: 1: המקום שאליו יהיו מוזרקים כל הממים, 2: שם יה יהיה הקטע של קנבס וגם הוא יהיה מחולק ל2 -->
+        <section class="mems-gallery">
         </section>
 
-        <section class="editor-container">
-
-            <input class="text-box" type="text" data-trans="line-text" name="" id="" placeholder="enter text" value="" class="input-text"
-                oninput="changeText(this.value)">
-            <button onclick="onDeleatText()">🗑️</button>
-
-            <div class="feachure"></div>
+        <section class="meme ">
+            <!-- <button class="btn btn-back" onclick="OnGoBackToGallery()">Back to gallery</button> -->
 
 
+            <div class="canvas-and-editor">
 
-            
+                <section class="canvas-contaainer">
+                    <canvas id="meme-canvas" height="500" width="500"></canvas>
+                </section>
+
+                <section class="editor-container flex">
 
 
-        </section>
-    </section>
+                    <input class="text-box" type="text" placeholder="enter text" value="" class="input-text"
+                        oninput="changeText(this.value)">
+
+
+
+                    <!-- <input type="color" onchange="onChangeColor(this.value)"> -->
+                    <div class="editor-btns">
+                        <button class="btn-edit" onclick="onDeleatText()"><i
+                                class="fa-solid fa-trash fa-xl"></i></button>
+                        <button type="color" class="btn-edit action-btn font-color-btn">
+                            <input type="color" class="font-color" oninput="onChangeColor(this.value)">
+                            <i class="fa-solid fa-palette fa-xl"></i>
+                        </button>
+                        <button class="btn-edit" onclick="onElingLeft()"><i
+                                class="fa-solid fa-align-left fa-xl"></i></button>
+                        <button class="btn-edit" onclick="onElingCenter()"><i
+                                class="fa-solid fa-align-right fa-xl"></i></button>
+                        <button class="btn-edit" onclick="onElingRight()"><i
+                                class="fa-solid fa-align-center  fa-xl"></i></button>
+                        <button class="btn-edit" onclick="onTextUp()"><i
+                                class="fa-solid fa-arrow-up fa-xl"></i></button>
+                        <button class="btn-edit" onclick="onTextDown()"><i
+                                class="fa-solid fa-arrow-down fa-xl"></i></button>
+                        <button class="btn-edit" onclick="onBiggerFont()"><i
+                                class="fa-solid fa-plus fa-xl"></i></button>
+                        <button class="btn-edit" onclick="onSmollerFont()"><i
+                                class="fa-solid fa-minus fa-xl"></i></button>
+                    </div>
 
 
 
 
-    <script src="./js/services/imgs-service.js"></script>
-    <script src="./js/services/meme.service.js"></script>
-    <script src="./js/controllers/controller.js"></script>
-    <script src="./js/controllers/img-controller.js"></script>
-    <script src="./js/controllers/meme-controller.js"></script>
+                    <div class="feachure"></div>
+
+                    <div class="btn more-btns">
+                        <button class="more-btn"><a href="#" class="btn-download" onclick="onDownLoad(this)"
+                                download="my-img.jpg">Download</a></button>
+                        <button class="more-btn" onclick="onClickSave()">Save</button>
+
+
+                        <button class="more-btn save-btn  download-btn"><a href="#" onclick="shareCanvas()"
+                                data-trans="api-share" download="file-name">share in MyApi web</a></button>
+                        <form class="form" action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
+                            <input name="img" id="imgData" type="hidden" />
+                            <button class="more-btn facebook" type="submit" data-trans="publish">Share in facebook</button><br>
+                            <div class="share-container"></div>
+                        </form>
+
+                </section>
+
+
+
+
+
+            </div>
+            <!-- כאן יהיה כל הקטע של ראש הדף, קישורים, כיתוב, וכן הלאה -->
+            <script src="./js/services/upload-service.js"></script>
+            <script src="./js/services/imgs-service.js"></script>
+            <script src="./js/services/meme.service.js"></script>
+            <script src="./js/controllers/controller.js"></script>
+            <script src="./js/controllers/img-controller.js"></script>
+            <script src="./js/controllers/meme-controller.js"></script>
 </body>
 
 </html>

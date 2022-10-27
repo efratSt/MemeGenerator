@@ -1,3 +1,180 @@
+* {
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: fa;
+    src: url(/fonts/fa-brands-400.ttf);
+}
+
+
+body {
+    margin: 0;
+    background-color: rgb(231, 231, 231);
+    background-image: url('../img/back.jpg');
+    background-size: cover;
+    padding: 0;
+    /* height: 100vh; */
+
+}
+
+
+/* עזרים כללים */
+.flex {
+    display: flex;
+}
+
+.flex.space-between {
+    justify-content: space-between;
+}
+
+.flex.aling-center {
+    align-items: center;
+}
+
+.flex.wrap {
+    flex-wrap: wrap;
+}
+
+.flex .justify-center {
+    justify-content: center;
+}
+
+.clean-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+
+
+/* HEADER */
+
+
+.main-layout {
+    flex-direction: column;
+}
+
+.main-header a:hover {
+    box-shadow: inset 0px -6px 0 #ffffff;
+    cursor: pointer;
+}
+
+.main-header {
+    height: 90px;
+    background-color: coral;
+    color: white;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 50px;
+    border-bottom: 1px solid coral;
+    justify-content: space-between;
+}
+
+.main-header .logo img {
+    padding-top: 7px;
+    display: block;
+    width: 25vw;
+    margin-inline-start: 20px;
+    margin-top: 13px;
+
+}
+
+
+.main-header .main-nav>* {
+    width: 10vw;
+    /* min-width: 100px; */
+    transition: all 0.15s;
+    list-style-type: none;
+
+}
+
+.main-header .main-nav a {
+    /* flex-direction: column-reverse; */
+    /* display: block; */
+    text-decoration: none;
+    color: #fff;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: coral;
+
+}
+
+
+.meme {
+    height: 100%;
+}
+
+
+.font-color {
+    /* width: 20px; */
+    opacity: 0;
+    position: absolute;
+}
+
+
+.btn-back {
+    position: relative;
+    top: -20px;
+    left: 75%;
+    background-color: inherit;
+    border: none;
+    font-size: 1.2rem;
+    color: coral;
+    font-weight: bold;
+    margin: auto;
+}
+
+
+
+.editor-container {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    /* margin: 2.5%; */
+    background-color: rgb(231, 231, 231);
+    border-radius: 5%;
+    /* margin-bottom: 50px; */
+}
+
+.text-box {
+    margin: 5%;
+    height: 40px;
+}
+
+
+.editor-btns {
+    margin: 3%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-edit {
+    background-color: inherit;
+    border: none;
+    margin: 1%;
+
+}
+
+.canvas-and-editor {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-around;
+    /* aspect-ratio: 1/1; */
+    /* justify-content: space-between; */
+}
+
+.canvas-contaainer {
+    width: 40%;
+    /* margin-inline-start: 20px; */
+    aspect-ratio: 1/1;
+    /* height: 100%; */
+}
+
 canvas {
     display: block;
     margin: 0 auto;
@@ -5,31 +182,94 @@ canvas {
 }
 
 .mems-gallery {
+
     display: flex;
     /* flex-direction: column; */
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .meme-img {
-    height: 100px;
-    width: 100px;
+    height: 200px;
+    width: 200px;
     margin: 10px;
+    border-radius: 10%;
 }
 
-.meme {
-    display: flex;
-    justify-content: space-around;
+.meme-img:hover {
+    opacity: 50%;
 }
 
-.feachure { 
+.feachure {
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
 }
 
 .emoji-feachure {
-    font-size: 40px;
+    font-size: 2rem;
+    margin: 1%;
+}
+
+.more-btns {
+    margin-top: 5%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.more-btn {
+    height: 5vh;
+    background-color: coral;
+    border: none;
+    /* width: 100%; */
+    height: 7vh;
+    font-size: 1.5rem;
+    border-radius: 2rem;
+    margin: 10px;
+    width: 90%;
+    color: rgb(255, 255, 255);
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.more-btn a {
+    /* font-family: sans; color: yellow; */
+    color: rgb(255, 255, 255);
+    text-decoration: none;
 }
 
 .hide {
     display: none;
 }
+
+
+
+
+
+
+@media (max-width: 760px) {
+
+    .canvas-and-editor {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin-bottom: 5px;
+
+    }
+
+    .editor-container {
+        margin-top: 10px;
+    }
+
+}
+
+
+
+
+
+/* .logo {
+    height: 100%;
+} */

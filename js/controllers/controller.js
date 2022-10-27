@@ -6,6 +6,8 @@ var isDrag = false
 var gStartPos
 var gCurrEmoji
 
+var gSaveMeme
+
 var gCurrImg
 var gEmojies = ['🤬', '🤪', '😪', '🤮', '🤠', '🤹', '💩', '🤫', '👽', '🖐', '⏲', '👿'];
 
@@ -17,10 +19,23 @@ function onInit() {
     renderImg()
     renderFeachure()
 
+    window.addEventListener('resize', () => {
+        resizeCanvas()
+    })
+
     addMouseListeners()
 }
 
 
+function initSave() {
+    renderSaveImag()
+}
+
+
+
+
+
+//הקשבה לאירועי עכבר
 function addMouseListeners() {
     gElCanvas.addEventListener('mousemove', onMove)
     gElCanvas.addEventListener('mousedown', onDown)
@@ -28,23 +43,12 @@ function addMouseListeners() {
 }
 
 
-
+//כאשר הכבר לוחץ על הקנבס
 function onMove(ev) {
-    // console.log('Im from onDown')
-    // console.log('before check');
-    if (!isDrag) return 
+    if (!isDrag) return
 
     const pos = getEvPos(ev)//המיקום שעליו אני דורכת הרגע 
 
-    // var idx = isClickedOnEmojiReturnIdx(pos)//הוא בודק האם אני בטווח של אימוגי ואם כן הוא מחזיר לי מיקום במערך שזה האוימוגי שלו
-    // console.log(isClickedOnEmojiReturnIdx(pos));
-    // if (!isClickedOnEmojiReturnIdx(pos)) return //הוא בודק האם אני בטווח של אימוגי ואם כן הוא מחזיר לי מיקום במערך שזה האוימוגי שלו
-    // console.log(pos.x, pos.y);
-
-    //איך אני אדע על איזה אימוגי אני דורכת אם
-    //updateFeachure(idx, pos) //פה הוא מעדכן את האימוגי הזה במערך שהמיקום שלו השתנה
-
-    // gStartPos = pos
     var idx = findEmojiInGmeme(gCurrEmoji)
     updateFeachure(idx, pos)
 
@@ -54,24 +58,42 @@ function onMove(ev) {
 
 }
 
+//כאשר העכבר נמצא מעל הקנבס
 function onDown(ev) {
-    // console.log('Im from onMove')
 
     const pos = getEvPos(ev) //זה שומר לי את הלחיצה העכשווית על הקנבס
-    console.log(isClickedOnEmojiReturnIdx(pos));
 
     var emoji = isClickedOnEmojiReturnIdx(pos)
-    if (emoji === undefined) return 
+    if (emoji === undefined) return
     gCurrEmoji = emoji
 
     isDrag = true
     gStartPos = pos
 
 }
-
+//כאשר העכבר עוזב את התמונה
 function onUp() {
-    console.log('Im from onUp')
     isDrag = false
+}
+
+//מרנדרת את האימוגים למסך עצמו
+function renderFeachure() {
+    var strHtml = gEmojies.map(emoji => `
+        <div class="emoji-feachure" onclick="onAddFeachure('${emoji}')">${emoji}</div>
+    `)
+    document.querySelector('.feachure').innerHTML = strHtml.join('')
+}
+
+//מרנדר את התמונה לתוך הקנבס
+function renderMeme() {
+    if (!gCurrImg.url) return
+    drawMeme(gCurrImg.url)
+}
+
+
+//מרנדרת את האימוגים שלחצתי כבר על הקנבס
+function renderFeachureOnCanvas() {
+    gMeme.feachures.forEach(feachure => drawText(feachure.txt, feachure.pos.x, feachure.pos.y))
 }
 
 
@@ -97,57 +119,40 @@ function getEvPos(ev) {
     return pos
 }
 
-function renderCanvas() {
-    renderMeme()
-    renderText()
-    renderFeachure()
-}
 
-function renderFeachure() {
-    var strHtml = gEmojies.map(emoji => `
-        <div class="emoji-feachure" onclick="onAddFeachure('${emoji}')">${emoji}</div>
-    `)
-    document.querySelector('.feachure').innerHTML = strHtml.join('')
-}
+
 
 function onAddFeachure(emoji) {
     addFeachure(emoji);
 }
 
 
-//מרנדרת את האימוגים שלחצתי כבר על הקנבס
-function renderFeachureOnCanvas() {
-    gMeme.feachures.forEach(feachure => drawText(feachure.txt, feachure.pos.x, feachure.pos.y))
-}
 
-
+//כאשר לוחצים על תמונה מסוים
 function onClickMeme(url) {
-    console.log(url);
     var elMemeGalary = document.querySelector('.mems-gallery')
     elMemeGalary.classList.add('hide')
 
     gCurrImg = getImmgByUrl(url)
 
     createMeme(gCurrImg.id)
-    console.log(gMeme);
 
     document.querySelector('.meme').classList.remove('hide')
 
     renderMeme()
 }
 
-
+//רינדור טקסט לקנבס
 function renderText() {
     var text = gMeme.lines[gMeme.selectedLineIdx].txt
-    drawText(text, 0, 35)
+    var size = gMeme.lines[0].size
+    drawText(text, gMeme.lines[0].width, gMeme.lines[0].height, gMeme.lines[0].size)
 }
 
 
-
-
+//כאשר קורה שינוי בטקסט
 function changeText(text) {
     gMeme.lines[gMeme.selectedLineIdx].txt = text
-    console.log(gMeme.lines[gMeme.selectedLineIdx].txt);
     renderMeme()
     renderText()
     renderFeachureOnCanvas()
@@ -155,13 +160,148 @@ function changeText(text) {
 }
 
 
-
+//כאשר לוחצים הכפתור מחיקה
 function onDeleatText() {
+    if (!gMeme) return
     console.log('onRenderText');
     gMeme.lines[gMeme.selectedLineIdx].txt = ''
     renderMeme()
     renderFeachureOnCanvas()
 
+    gMeme.lines[0].height = 50
+    gMeme.lines[0].width = 30
+
     document.querySelector('.text-box').value = ''
 }
 
+
+//מזיז את הטקסט לשמאל, ככה הוא בדיפולט
+function onElingLeft() {
+    gMeme.lines[0].width = 30
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+
+//מזיז את הטקסט לאמצע
+function onElingCenter() {
+    gMeme.lines[0].width = 150
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+
+//מזיז את הטקסט לצד ימין
+function onElingRight() {
+    gMeme.lines[0].width = 350
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+//כאשר משנים את הצבע
+function onChangeColor(color) {
+    console.log(color);
+    gMeme.color = color
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+
+//כאשר לוחצים על השורה של ההוספת טסקט זה מוסיף עוד שורה במערך של השורות
+function OnAddLineText() {
+    gMeme.lines.push({ txt: '', size: 40, width: 30, height: 400, color: 'white', stroke: 'black' })
+    console.log(gMeme.lines);
+}
+
+
+//הוזזת הטקסט ללמעלה
+function onTextUp() {
+    if (gMeme.lines[0].height <= 50) return
+    gMeme.lines[0].height -= 20
+    console.log(gMeme.lines[0].height);
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+//הוזזת הטקסט למטה
+function onTextDown() {
+    if (gMeme.lines[0].height >= 470) return
+    gMeme.lines[0].height += 20
+    console.log(gMeme.lines[0].height);
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+//מגדילה את הגודל של הפונט
+function onBiggerFont() {
+    var size = +gMeme.lines[0].size
+    size += 10
+    gMeme.lines[0].size = size
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+
+//מקטינה את הגודל של הפונט, לא יותר קטן מ-10
+function onSmollerFont() {
+    var size = +gMeme.lines[0].size
+    if (size <= 10) return
+
+    size -= 10
+    gMeme.lines[0].size = size
+    console.log(gMeme.lines[0].size);
+    renderMeme()
+    renderText()
+    renderFeachureOnCanvas()
+}
+
+
+function OnGoBackToGallery() {
+    document.querySelector('.mems-gallery').classList.remove('hide')
+    document.querySelector('.meme').classList.add('hide')
+    gMeme = null
+    onDeleatText()
+}
+
+
+
+
+//הורדת התמונה למחשב
+function onDownLoad(elLink) {
+    const imgContent = gElCanvas.toDataURL('image/jpeg')// image/jpeg the default format
+    elLink.href = imgContent
+}
+
+
+function onClickSave() {
+    if (!gSaveMeme) gSaveMeme = []
+    gSaveMeme.push(gMeme)
+    console.log('from click saveMeme', gSaveMeme);
+}
+
+async function shareCanvas() {
+    const canvasElement = gElCanvas;
+    const dataUrl = canvasElement.toDataURL();
+    const blob = await (await fetch(dataUrl)).blob();
+    const filesArray = [
+        new File(
+            [blob],
+            'animation.png',
+            {
+                type: blob.type,
+                lastModified: new Date().getTime()
+            }
+        )
+    ];
+    const shareData = {
+        files: filesArray,
+    };
+    navigator.share(shareData);
+}
