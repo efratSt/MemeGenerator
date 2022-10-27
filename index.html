@@ -56,7 +56,7 @@
                         oninput="changeText(this.value)">
 
 
-
+                    <span></span>
                     <!-- <input type="color" onchange="onChangeColor(this.value)"> -->
                     <div class="editor-btns">
                         <button class="btn-edit" onclick="onDeleatText()"><i
@@ -94,9 +94,11 @@
 
                         <button class="more-btn save-btn  download-btn"><a href="#" onclick="shareCanvas()"
                                 data-trans="api-share" download="file-name">share in MyApi web</a></button>
-                        <form class="form" action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
+                        <form class="form" action="" method="POST" enctype="multipart/form-data"
+                            onsubmit="uploadImg(this, event)">
                             <input name="img" id="imgData" type="hidden" />
-                            <button class="more-btn facebook" type="submit" data-trans="publish">Share in facebook</button><br>
+                            <button class="more-btn facebook" type="submit" data-trans="publish">Share in
+                                facebook</button><br>
                             <div class="share-container"></div>
                         </form>
 
