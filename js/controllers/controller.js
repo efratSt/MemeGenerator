@@ -5,6 +5,8 @@ const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 var isDrag = false
 var gStartPos
 var gCurrEmoji
+var gCurrLine = 0
+
 
 var gSaveMeme
 
@@ -138,21 +140,32 @@ function onClickMeme(url) {
     createMeme(gCurrImg.id)
 
     document.querySelector('.meme').classList.remove('hide')
+    gCurrLine = 0
 
     renderMeme()
+    borderText(10)
+    renderText()
 }
 
 //רינדור טקסט לקנבס
 function renderText() {
-    var text = gMeme.lines[gMeme.selectedLineIdx].txt
-    var size = gMeme.lines[0].size
-    drawText(text, gMeme.lines[0].width, gMeme.lines[0].height, gMeme.lines[0].size)
+    
+    gMeme.lines.forEach(line => {
+        var text = line.txt
+        var color = line.color
+        drawText(text, line.width, line.height, line.size, color)
+    })
+
+
+    // var text = gMeme.lines[gMeme.selectedLineIdx].txt
+    // var size = gMeme.lines[0].size
+    // drawText(text, gMeme.lines[0].width, gMeme.lines[0].height, gMeme.lines[0].size)
 }
 
 
 //כאשר קורה שינוי בטקסט
 function changeText(text) {
-    gMeme.lines[gMeme.selectedLineIdx].txt = text
+    gMeme.lines[gCurrLine].txt = text
     renderMeme()
     renderText()
     renderFeachureOnCanvas()
@@ -163,13 +176,18 @@ function changeText(text) {
 //כאשר לוחצים הכפתור מחיקה
 function onDeleatText() {
     if (!gMeme) return
-    console.log('onRenderText');
-    gMeme.lines[gMeme.selectedLineIdx].txt = ''
+
+    gMeme.lines[gCurrLine].txt = ''
+    if (gCurrLine === 1) gMeme.lines.splice(gCurrLine, 1)
+    // פה צריך למחוק מהמערך את השורה הנוכחית ואז את השורה שמעליי לא יהיה צריך
+    if (gCurrLine === 1) gCurrLine = 0
+
     renderMeme()
     renderFeachureOnCanvas()
+    renderText()
 
-    gMeme.lines[0].height = 50
-    gMeme.lines[0].width = 30
+    // gMeme.lines[0].height = 50
+    // gMeme.lines[0].width = 30
 
     document.querySelector('.text-box').value = ''
 }
@@ -177,7 +195,7 @@ function onDeleatText() {
 
 //מזיז את הטקסט לשמאל, ככה הוא בדיפולט
 function onElingLeft() {
-    gMeme.lines[0].width = 30
+    gMeme.lines[gCurrLine].width = 30
     renderMeme()
     renderText()
     renderFeachureOnCanvas()
@@ -186,7 +204,7 @@ function onElingLeft() {
 
 //מזיז את הטקסט לאמצע
 function onElingCenter() {
-    gMeme.lines[0].width = 150
+    gMeme.lines[gCurrLine].width = 150
     renderMeme()
     renderText()
     renderFeachureOnCanvas()
@@ -195,7 +213,7 @@ function onElingCenter() {
 
 //מזיז את הטקסט לצד ימין
 function onElingRight() {
-    gMeme.lines[0].width = 350
+    gMeme.lines[gCurrLine].width = 350
     renderMeme()
     renderText()
     renderFeachureOnCanvas()
@@ -203,8 +221,7 @@ function onElingRight() {
 
 //כאשר משנים את הצבע
 function onChangeColor(color) {
-    console.log(color);
-    gMeme.color = color
+    gMeme.lines[gCurrLine].color = color
     renderMeme()
     renderText()
     renderFeachureOnCanvas()
@@ -221,7 +238,7 @@ function OnAddLineText() {
 //הוזזת הטקסט ללמעלה
 function onTextUp() {
     if (gMeme.lines[0].height <= 50) return
-    gMeme.lines[0].height -= 20
+    gMeme.lines[gCurrLine].height -= 20
     console.log(gMeme.lines[0].height);
     renderMeme()
     renderText()
@@ -231,8 +248,7 @@ function onTextUp() {
 //הוזזת הטקסט למטה
 function onTextDown() {
     if (gMeme.lines[0].height >= 470) return
-    gMeme.lines[0].height += 20
-    console.log(gMeme.lines[0].height);
+    gMeme.lines[gCurrLine].height += 20
     renderMeme()
     renderText()
     renderFeachureOnCanvas()
@@ -285,6 +301,26 @@ function onClickSave() {
     gSaveMeme.push(gMeme)
     console.log('from click saveMeme', gSaveMeme);
 }
+
+
+//כאשר לוחצים על הוספת שורה
+function onEddLine() {
+    if (gMeme.lines.length >= 2) return
+    gMeme.lines.push({ txt: 'Your text here', size: '40', width: 30, height: 400, color: 'white', stroke: 'black', })
+    gCurrLine = 1
+    document.querySelector('.text-box').value = ''
+    renderText()
+}
+
+function onChangeSelectLine() {
+    console.log('befor change', gCurrLine);
+    console.log('gMeme.lines.length', gMeme.lines.length);
+    if (gCurrLine === 0 && gMeme.lines.length > 1) gCurrLine = 1
+    else if (gCurrLine === 1) gCurrLine = 0
+    console.log('after change', gCurrLine);
+
+}
+
 
 async function shareCanvas() {
     const canvasElement = gElCanvas;

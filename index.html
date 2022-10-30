@@ -68,9 +68,9 @@
                         <button class="btn-edit" onclick="onElingLeft()"><i
                                 class="fa-solid fa-align-left fa-xl"></i></button>
                         <button class="btn-edit" onclick="onElingCenter()"><i
-                                class="fa-solid fa-align-right fa-xl"></i></button>
-                        <button class="btn-edit" onclick="onElingRight()"><i
                                 class="fa-solid fa-align-center  fa-xl"></i></button>
+                        <button class="btn-edit" onclick="onElingRight()"><i
+                                class="fa-solid fa-align-right fa-xl"></i></button>
                         <button class="btn-edit" onclick="onTextUp()"><i
                                 class="fa-solid fa-arrow-up fa-xl"></i></button>
                         <button class="btn-edit" onclick="onTextDown()"><i
@@ -79,6 +79,8 @@
                                 class="fa-solid fa-plus fa-xl"></i></button>
                         <button class="btn-edit" onclick="onSmollerFont()"><i
                                 class="fa-solid fa-minus fa-xl"></i></button>
+                        <button onclick="onEddLine()">Edd line</button>
+                        <button onclick="onChangeSelectLine()">Change select line</button>
                     </div>
 
 
@@ -94,13 +96,13 @@
 
                         <button class="more-btn save-btn  download-btn"><a href="#" onclick="shareCanvas()"
                                 data-trans="api-share" download="file-name">share in MyApi web</a></button>
-                        <form class="form" action="" method="POST" enctype="multipart/form-data"
+                        <!-- <form class="form" action="" method="POST" enctype="multipart/form-data"
                             onsubmit="uploadImg(this, event)">
                             <input name="img" id="imgData" type="hidden" />
-                            <button class="more-btn facebook" type="submit" data-trans="publish">Share in
-                                facebook</button><br>
+                            <button class="more-btn facebook" type="submit">Share in
+                                facebook</button>
                             <div class="share-container"></div>
-                        </form>
+                        </form> -->
 
                 </section>
 
@@ -109,7 +111,7 @@
 
 
             </div>
-            <!-- כאן יהיה כל הקטע של ראש הדף, קישורים, כיתוב, וכן הלאה -->
+
             <script src="./js/services/upload-service.js"></script>
             <script src="./js/services/imgs-service.js"></script>
             <script src="./js/services/meme.service.js"></script>

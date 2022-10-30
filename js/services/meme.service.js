@@ -10,7 +10,7 @@ function createMeme(imgIdx) {
         selectedImgId: imgIdx,
         selectedLineIdx: 0,
         feachures: [],
-        lines: [{ txt: '', size: '40', width: 30, height: 50, color: 'white', stroke: 'black', }]
+        lines: [{ txt: 'Your text here', size: '40', width: 30, height: 50, color: 'white', stroke: 'black', }]
     }
     gMeme = meme
 }
@@ -48,11 +48,11 @@ function drawMeme(url) {
 
 
 //פונקציה שמציירת כיתוב שמקבלת במיקום שמקבלת על הקנבס
-function drawText(text = '', x = 30, y = 50, size = 40) {
+function drawText(text = '', x = 30, y = 50, size = 40 , color = 'white') {
     //כאן אני אקרא לפונקציה שתצייר לי מסגרת לטקסט מתחילת העמוד ועד סוף העמוד בגוגבה נתון
     gCtx.lineWidth = 2
     gCtx.strokeStyle = 'black'
-    gCtx.fillStyle = gMeme.color
+    gCtx.fillStyle = color
     gCtx.font = size + 'px Arial'
     gCtx.fillText(text, x, y)
     gCtx.strokeText(text, x, y)
